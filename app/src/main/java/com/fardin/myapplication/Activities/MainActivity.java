@@ -1,21 +1,29 @@
-package com.fardin.myapplication;
+package com.fardin.myapplication.Activities;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 import com.airbnb.lottie.LottieAnimationView;
+import com.fardin.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class MainActivity extends AppCompatActivity {
     private LottieAnimationView animationView;
     private LottieAnimationView welcomeAnimation;
+    FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getSupportActionBar().hide();
+
+        auth= FirebaseAuth.getInstance();
+
+
         animationView=findViewById(R.id.animationView);
         welcomeAnimation=findViewById(R.id.welcome);
         welcomeAnimation.setAnimation("welcome.json");
@@ -34,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 },3000);
         }
+
 
         else {
             animationView.setAnimation("unlock-login.json");

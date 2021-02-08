@@ -1,4 +1,4 @@
-package com.fardin.myapplication;
+package com.fardin.myapplication.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.fardin.myapplication.R;
 import com.hbb20.CountryCodePicker;
 
 public class PhoneLoginActivity extends AppCompatActivity {
@@ -20,12 +22,15 @@ public class PhoneLoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_login);
 
+        getSupportActionBar().hide();
+
         countryCodePicker = findViewById(R.id.ccp);
         number = findViewById(R.id.editText_carrierNumber);
         countryCodePicker.registerCarrierNumberEditText(number);
     }
 
     public void onClickNext(View view) {
+
         if(TextUtils.isEmpty(number.getText().toString())){
             Toast.makeText(PhoneLoginActivity.this, "Enter No ....", Toast.LENGTH_SHORT).show();
         }
@@ -38,5 +43,10 @@ public class PhoneLoginActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+    public void Register(View view){
+
+        Intent intent = new Intent(PhoneLoginActivity.this, SignUpActivity.class);
+        startActivity(intent);
     }
 }

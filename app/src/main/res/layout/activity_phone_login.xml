@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PhoneLoginActivity">
+    tools:context=".Activities.PhoneLoginActivity"
+    android:orientation="vertical">
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -48,11 +49,8 @@
                 android:orientation="horizontal"
                 android:padding="12dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginTop="2dp" />
+
+
 
                 <com.hbb20.CountryCodePicker
                     android:layout_width="wrap_content"
@@ -78,27 +76,42 @@
 
             </LinearLayout>
 
-            <View
-                android:layout_marginRight="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="@color/white"/>
 
 
+
+
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="0dp">
             <Button
                 android:id="@+id/next"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="40dp"
+                android:layout_gravity="left"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/robotobold"
                 android:onClick="onClickNext"
                 android:paddingLeft="60dp"
                 android:paddingRight="60dp"
                 android:text="Next"
                 android:textColor="@color/login_background" />
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="#00000000"
+        android:text="Don't have an account? Sign Up"
+        android:onClick="Register"
+        android:textColor="@color/white"
+        android:fontFamily="@font/robotobold"
+        >
 
+    </Button>
+</LinearLayout>
             <LinearLayout
                 android:layout_marginTop="40dp"
                 android:layout_width="match_parent"

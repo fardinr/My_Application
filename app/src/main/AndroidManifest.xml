@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fardin.myapplication">
-
+    
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,10 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".DashBoardActivity"></activity>
-        <activity android:name=".VerificationActivity" />
-        <activity android:name=".PhoneLoginActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".Activities.SetupProfileActivity"></activity>
+        <activity android:name=".Activities.ChatScreenActivity" />
+        <activity android:name=".Activities.createGroupActivity" />
+        <activity android:name=".Activities.SignUpActivity" />
+        <activity android:name=".Activities.DashBoardActivity" />
+        <activity android:name=".Activities.VerificationActivity" />
+        <activity android:name=".Activities.PhoneLoginActivity" />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

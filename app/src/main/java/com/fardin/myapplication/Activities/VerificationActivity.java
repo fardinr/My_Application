@@ -1,9 +1,10 @@
-package com.fardin.myapplication;
+package com.fardin.myapplication.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -14,6 +15,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fardin.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -33,17 +35,25 @@ public class VerificationActivity extends AppCompatActivity {
     private MKLoader loader;
     private String number,id;
     private FirebaseAuth mAuth;
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
+
+        getSupportActionBar().hide();
+
         otp = findViewById(R.id.otp);
         resend = findViewById(R.id.resend);
         loader = findViewById(R.id.loader);
 
         mAuth = FirebaseAuth.getInstance();
         number = getIntent().getStringExtra("number");
+        dialog = new ProgressDialog(this);
+        dialog.setMessage("Sending OTP....");
+        dialog.setCancelable(false);
+        dialog.show();
         sendVerificationCode();
     }
 
@@ -91,6 +101,7 @@ public class VerificationActivity extends AppCompatActivity {
                     @Override
                     public void onCodeSent(String id, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                         VerificationActivity.this.id = id;
+                        dialog.dismiss();
 
                     }
 
@@ -117,8 +128,8 @@ public class VerificationActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 loader.setVisibility(View.GONE);
                 if (task.isSuccessful()) {
-                    startActivity(new Intent(VerificationActivity.this,DashBoardActivity.class));
-                    finish();
+                    startActivity(new Intent(VerificationActivity.this,SetupProfileActivity.class));
+                    finishAffinity();
                     FirebaseUser user = task.getResult().getUser();
                         // ...
                 } else {
