@@ -39,6 +39,7 @@ public class ChatScreenActivity extends AppCompatActivity {
 
     FirebaseDatabase database;
 
+
     @SuppressLint("RestrictedApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class ChatScreenActivity extends AppCompatActivity {
         binding = ActivityChatScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         getSupportActionBar().hide();
+        UserState.updateUserState("onCreate chatScreen");
 
 
         String name = getIntent().getStringExtra("name");
@@ -68,11 +70,27 @@ public class ChatScreenActivity extends AppCompatActivity {
                 .into(binding.profile);
 
         binding.username.setText(name);
+
         binding.recyclerView.setLayoutManager(layoutManager);
         binding.recyclerView.setAdapter(adapter);
 
 
 
+        database.getReference().child("users")
+                .child(receiverUid)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        binding.lastSeen.setText(user.getState());
+                        binding.lastTime.setText(user.getTime()+" "+user.getDate());
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
         database.getReference().child("chats")
                 .child(senderRoom)
@@ -85,6 +103,7 @@ public class ChatScreenActivity extends AppCompatActivity {
                             Message message = dataSnapshot1.getValue(Message.class);
                             message.setMessageID(dataSnapshot1.getKey());
                             messages.add(message);
+
                         }
                         adapter.notifyDataSetChanged();
                         if (adapter.getItemCount() >= 1) {
@@ -150,13 +169,23 @@ public class ChatScreenActivity extends AppCompatActivity {
 
     }
 
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        UserState.updateUserState("onStop in chatScreen");
+//    }
+//    @Override
 
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        UserState.updateUserState("test2");
-
+    protected void onStart() {
+        super.onStart();
+        UserState.updateUserState("online");
     }
+//    protected void onPostResume() {
+//        super.onPostResume();
+//        UserState.updateUserState("test2");
+//
+//    }
 
     @Override
     public boolean onSupportNavigateUp() {

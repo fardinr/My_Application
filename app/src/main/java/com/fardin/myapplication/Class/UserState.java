@@ -11,19 +11,26 @@ public class UserState {
     //online offline user status updating in firebase here
 
     static public void updateUserState(String state){
-        String time,date;
+        String time = "",date= "";
 
-        Calendar calendar = Calendar.getInstance();
+        if (state.equals("offline")) {
+            Calendar calendar = Calendar.getInstance();
 
-        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
-        time = currentTime.format(calendar.getTime());
-        SimpleDateFormat currentDate = new SimpleDateFormat("mm dd ,yyyy");
-        date = currentDate.format(calendar.getTime());
+            SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+            time = currentTime.format(calendar.getTime());
+            SimpleDateFormat currentDate = new SimpleDateFormat("MM dd ,yyyy");
+            date = currentDate.format(calendar.getTime());
 
+        }
+//        if (state.equals("online")){
+//            time = "";
+//            date = "";
+//
+//        }
         HashMap<String, Object> onlineState = new HashMap<>();
-        onlineState.put("time",time);
-        onlineState.put("date",date);
-        onlineState.put("state",state);
+        onlineState.put("time", time);
+        onlineState.put("date", date);
+        onlineState.put("state", state);
 
         FirebaseDatabase.getInstance().getReference()
                 .child("users")

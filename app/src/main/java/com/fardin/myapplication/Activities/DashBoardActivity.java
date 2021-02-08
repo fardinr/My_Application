@@ -45,6 +45,7 @@ public class DashBoardActivity extends AppCompatActivity {
         recyclerView.setAdapter(usersAdapter);
 
 
+        UserState.updateUserState("in onCreate of dashboard");
 
     database.getReference().child("users").addValueEventListener(new ValueEventListener() {
             @Override
@@ -69,11 +70,21 @@ public class DashBoardActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        UserState.updateUserState("offline");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @Override
     protected void onStop() {
         super.onStop();
-
+//        UserState.updateUserState("onStop of dasboard");
     }
 
     @Override
@@ -81,11 +92,11 @@ public class DashBoardActivity extends AppCompatActivity {
         super.onDestroy();
         UserState.updateUserState("offline");
     }
-
+//
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        UserState.updateUserState("test");
+    protected void onResume() {
+        super.onResume();
+        UserState.updateUserState("online");
 
     }
 
