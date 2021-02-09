@@ -22,7 +22,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scottyab.aescrypt.AESCrypt;
 
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -34,7 +36,8 @@ public class ChatScreenActivity extends AppCompatActivity {
     ActivityChatScreenBinding binding;
     MessagesAdapter adapter;
     ArrayList<Message> messages;
-
+    String messageAfterDecrypt;
+    String encryptedMsg = "";
     String senderRoom , receiverRoom;
 
     FirebaseDatabase database;
@@ -102,6 +105,13 @@ public class ChatScreenActivity extends AppCompatActivity {
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                             Message message = dataSnapshot1.getValue(Message.class);
                             message.setMessageID(dataSnapshot1.getKey());
+                            try {
+                                messageAfterDecrypt = AESCrypt.decrypt(message.getMessageID(), message.getMessage());
+                            }catch (GeneralSecurityException e){
+                                //handle error - could be due to incorrect password or tampered encryptedMsg
+                            }
+                            message.setMessage(messageAfterDecrypt);
+
                             messages.add(message);
 
                         }
@@ -128,20 +138,28 @@ public class ChatScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String randomKey = database.getReference().push().getKey();
                 String messageTxt = binding.messageBox.getText().toString();
 
+                try {
+                    encryptedMsg = AESCrypt.encrypt(randomKey, messageTxt);
+                }catch (GeneralSecurityException e){
+                    //handle error
+                }
+
                 Date date = new Date();
-                final Message message = new Message(messageTxt, senderUid, date.getTime());
+                final Message message = new Message(encryptedMsg, senderUid, date.getTime());
                 binding.messageBox.setText("");
 
                 HashMap<String, Object> lastMsgObj = new HashMap<>();
                 lastMsgObj.put("lastMsg", message.getMessage());
                 lastMsgObj.put("lastMsgTime", date.getTime());
+                lastMsgObj.put("MessageID", randomKey);
 
                 database.getReference().child("chats").child(senderRoom).updateChildren(lastMsgObj);
                 database.getReference().child("chats").child(receiverRoom).updateChildren(lastMsgObj);
 
-                String randomKey = database.getReference().push().getKey();
+
                 database.getReference().child("chats")
                         .child(senderRoom)
                         .child("messages")

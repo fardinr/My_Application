@@ -19,7 +19,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.scottyab.aescrypt.AESCrypt;
 
+import java.security.GeneralSecurityException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -57,11 +59,21 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UsersViewHol
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if(snapshot.exists()) {
-                            String lastMsg = snapshot.child("lastMsg").getValue(String.class);
+                            String messageAfterDecrypt = "";
+                            String encryptMessage = snapshot.child("lastMsg").getValue(String.class);
+                            String MessageID = snapshot.child("MessageID").getValue(String.class);
                             long time = snapshot.child("lastMsgTime").getValue(Long.class);
+
+//                          decrypting the msg here
+                            try {
+                                messageAfterDecrypt = AESCrypt.decrypt(MessageID, encryptMessage);
+                            }catch (GeneralSecurityException e){
+                                //handle error - could be due to incorrect password or tampered encryptedMsg
+                            }
+
                             SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
                             holder.binding.msgTime.setText(dateFormat.format(new Date(time)));
-                            holder.binding.lastMsg.setText(lastMsg);
+                            holder.binding.lastMsg.setText(messageAfterDecrypt);
                         } else {
                             holder.binding.lastMsg.setText("Tap to chat");
                         }
