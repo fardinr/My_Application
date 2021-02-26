@@ -44,9 +44,4 @@ public class PhoneLoginActivity extends AppCompatActivity {
             finish();
         }
     }
-    public void Register(View view){
-
-        Intent intent = new Intent(PhoneLoginActivity.this, SignUpActivity.class);
-        startActivity(intent);
-    }
 }

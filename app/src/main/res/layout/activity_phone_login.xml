@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop" />
 
+
     <LinearLayout
         android:background="@color/login_background"
         android:orientation="vertical"
@@ -36,29 +37,27 @@
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:padding="12dp">
 
 
-
-
                 <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
                     android:layout_marginLeft="10dp"
-                    app:ccp_contentColor="@color/white"
-                    android:id="@+id/ccp"/>
+                    android:layout_marginTop="2dp"
+                    app:ccp_contentColor="@color/white" />
 
                 <EditText
                     android:id="@+id/editText_carrierNumber"
@@ -67,55 +66,41 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginTop="2dp"
                     android:background="#00000000"
+                    android:fontFamily="@font/robotobold"
                     android:gravity="center_vertical"
                     android:hint="Number"
                     android:inputType="phone"
                     android:textColor="#ffffff"
-                    android:textColorHint="#FFFFFF"
-                    android:fontFamily="@font/robotobold" />
+                    android:textColorHint="#FFFFFF" />
 
             </LinearLayout>
 
 
-
-
-
-
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_margin="0dp">
-            <Button
-                android:id="@+id/next"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/robotobold"
-                android:onClick="onClickNext"
-                android:paddingLeft="60dp"
-                android:paddingRight="60dp"
-                android:text="Next"
-                android:textColor="@color/login_background" />
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:background="#00000000"
-        android:text="Don't have an account? Sign Up"
-        android:onClick="Register"
-        android:textColor="@color/white"
-        android:fontFamily="@font/robotobold"
-        >
-
-    </Button>
-</LinearLayout>
             <LinearLayout
-                android:layout_marginTop="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="0dp"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/next"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/robotobold"
+                    android:onClick="onClickNext"
+                    android:paddingLeft="60dp"
+                    android:paddingRight="60dp"
+                    android:text="Next"
+                    android:textColor="@color/login_background" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="100dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 

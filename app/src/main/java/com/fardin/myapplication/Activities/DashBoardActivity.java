@@ -1,28 +1,27 @@
 package com.fardin.myapplication.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.fardin.myapplication.Class.UserState;
-import com.fardin.myapplication.R;
-import com.fardin.myapplication.Models.User;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fardin.myapplication.Adapters.UsersAdapter;
+import com.fardin.myapplication.Class.NotificationService;
+import com.fardin.myapplication.Class.UserState;
+import com.fardin.myapplication.Models.User;
+import com.fardin.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 
 public class DashBoardActivity extends AppCompatActivity {
 
@@ -35,6 +34,12 @@ public class DashBoardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dash_board);
+
+        /*
+        startService(new Intent(this, NotificationService.class));
+        the send notificaion service is started by above line
+        */
+
 
         recyclerView = findViewById(R.id.recyclerView);
         database = FirebaseDatabase.getInstance();

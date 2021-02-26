@@ -1,18 +1,20 @@
 package com.fardin.myapplication.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.fardin.myapplication.Adapters.MessagesAdapter;
 import com.fardin.myapplication.Class.UserState;
 import com.fardin.myapplication.Models.Message;
+import com.fardin.myapplication.Models.MessageStatus;
 import com.fardin.myapplication.Models.User;
 import com.fardin.myapplication.R;
 import com.fardin.myapplication.databinding.ActivityChatScreenBinding;
@@ -25,9 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.scottyab.aescrypt.AESCrypt;
 
 import java.security.GeneralSecurityException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -38,6 +38,7 @@ public class ChatScreenActivity extends AppCompatActivity {
     ArrayList<Message> messages;
     String messageAfterDecrypt;
     String encryptedMsg = "";
+    String encryptedMsg1 = "";
     String senderRoom , receiverRoom;
 
     FirebaseDatabase database;
@@ -56,7 +57,6 @@ public class ChatScreenActivity extends AppCompatActivity {
         String name = getIntent().getStringExtra("name");
         String receiverUid = getIntent().getStringExtra("uid");
         String profile = getIntent().getStringExtra("profile");
-
 
         database = FirebaseDatabase.getInstance();
         final String senderUid = FirebaseAuth.getInstance().getUid();
@@ -104,18 +104,64 @@ public class ChatScreenActivity extends AppCompatActivity {
                         messages.clear();
                         for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
                             Message message = dataSnapshot1.getValue(Message.class);
+                            Log.i("fire",dataSnapshot1.getValue().toString());
                             message.setMessageID(dataSnapshot1.getKey());
-                            try {
-                                messageAfterDecrypt = AESCrypt.decrypt(message.getMessageID(), message.getMessage());
-                            }catch (GeneralSecurityException e){
-                                //handle error - could be due to incorrect password or tampered encryptedMsg
+
+//                            database.getReference()
+//                                    .child("chats")
+//                                    .child(senderRoom)
+//                                    .child("messages")
+//                                    .child(message.getMessageID())
+//                                    .child("status")
+//                                    .addValueEventListener(new ValueEventListener() {
+//                                        @Override
+//                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                                            MessageStatus messageStatus = dataSnapshot.getValue(MessageStatus.class);
+//                                            Message message1= message;
+//                                            if(dataSnapshot.exists()) {
+//                                                try {
+//
+//                                                    encryptedMsg1 = AESCrypt.encrypt(message1.getMessageID(), message1.getMessage());
+//                                                }catch (GeneralSecurityException e){
+//                                                    //handle error
+//                                                }
+//
+//                                                message1.setMessage(encryptedMsg1);
+//
+//                                                /*todo prevous msg get encrpted after new msg get send. and after seen that new msg
+//                                                        the every thing get to normal.and this occure after this encryption block
+//                                                        that is in this comment*/
+//                                                if (!messageStatus.isSeen()) {
+//                                                    database.getReference().child("chats")
+//                                                            .child(senderRoom)
+//                                                            .child("unseen")
+//                                                            .child(message1.getMessageID())
+//                                                            .setValue(message1);
+//                                                } else {
+//                                                    database.getReference().child("chats")
+//                                                            .child(senderRoom)
+//                                                            .child("unseen")
+//                                                            .child(message1.getMessageID())
+//                                                            .removeValue();
+//                                                }
+//                                            }
+//                                        }
+//                                        @Override
+//                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//                                        }
+//                                    });
+//
+
+                            if (message.getMessage()!=null && message.getMessageID()!=null) {
+                                try {
+                                    messageAfterDecrypt = AESCrypt.decrypt(message.getMessageID(), message.getMessage());
+                                } catch (GeneralSecurityException e) {}
+                                message.setMessage(messageAfterDecrypt);
                             }
-                            message.setMessage(messageAfterDecrypt);
-
                             messages.add(message);
-
                         }
                         adapter.notifyDataSetChanged();
+
                         if (adapter.getItemCount() >= 1) {
                             binding.recyclerView.getLayoutManager().smoothScrollToPosition(binding.recyclerView, null, adapter.getItemCount() - 1);
                         }
@@ -175,7 +221,16 @@ public class ChatScreenActivity extends AppCompatActivity {
                                 .setValue(message).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                HashMap<String, Object> msgStatus = new HashMap<>();
+                                msgStatus.put("send", true);
+                                msgStatus.put("seen", false);
 
+                                database.getReference().child("chats")
+                                        .child(senderRoom)
+                                        .child("messages")
+                                        .child(randomKey)
+                                        .child("status")
+                                        .updateChildren(msgStatus);
                             }
                         });
                     }
@@ -193,6 +248,19 @@ public class ChatScreenActivity extends AppCompatActivity {
 //        UserState.updateUserState("onStop in chatScreen");
 //    }
 //    @Override
+
+
+    @Override
+    protected void onPause() {
+        binding.recyclerView.setAdapter(null);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        binding.recyclerView.setAdapter(adapter);
+        super.onResume();
+    }
 
     @Override
     protected void onStart() {

@@ -9,6 +9,14 @@ public class Message {
 
     }
 
+
+    public Message(String message, String senderID, long timestamp, int feeling) {
+        this.message = message;
+        this.senderID = senderID;
+        this.timestamp = timestamp;
+        this.feeling = feeling;
+    }
+
     public Message(String message, String senderID, long timestamp) {
         this.message = message;
         this.senderID = senderID;
