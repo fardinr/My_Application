@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:472425676942:android:d415548af6b24ad26d49df",
+        "android_client_info": {
+          "package_name": "com.fardin.Chat_Intercom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "472425676942-ig3gvqvkouqojifbhn6s4vedm6vtr1ts.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3ZswzscimfULuAQu8ex-_6Y1L0lg3l20"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "472425676942-ig3gvqvkouqojifbhn6s4vedm6vtr1ts.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:472425676942:android:ff1b3300b05a215e6d49df",
         "android_client_info": {
           "package_name": "com.fardin.myapplication"

@@ -2,9 +2,11 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/chatbaground"
     tools:context=".Activities.ChatScreenActivity">
 
 
@@ -28,7 +30,7 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <EditText
+            <com.fardin.Chat_Intercom.widget.MenuEditText
                 android:id="@+id/messageBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -81,7 +83,7 @@
         android:id="@+id/constraintLayout2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#59BBE8"
+        android:background="@drawable/chatbarbaground"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
